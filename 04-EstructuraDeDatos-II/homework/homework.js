@@ -11,16 +11,76 @@
 // search: Busca un valor dentro de la lista. Puede recibir un valor o una función. Si no hubiera resultados, devuelve null.
 
 function LinkedList() {
-
+  this.cantelem=0;
+  this.head=null;
+}
+function Node(valor){
+  this.next=null;
+  this.value=valor ; 
+}
+LinkedList.prototype.add=function(valor){
+  var nuevonode=new Node(valor);
+  var current =this.head;
+  if(!current){
+    this.head=nuevonode
+    this.cantelem++
+    return nuevonode
+  }
+  while(current.next){
+    current=current.next
+  }
+  current.next=nuevonode
+  this.cantelem++
+  return nuevonode
 }
 
-function Node(value){
+// list --> franco --> miguel --> perez-->null
 
+LinkedList.prototype.remove=function(){
+  
+  
+  if(!this.head){return null}
+  
+  if(this.head.next===null){
+    var valorr=this.head.value
+    this.head=null;
+    return valorr;
+  }
+  var current=this.head;
+  
+  while(current.next.next){
+    current=current.next
+  }
+  
+  var valorr=current.next.value
+  current.next=null;
+  this.cantelem--
+  return valorr;
+  
 }
+LinkedList.prototype.search=function(elem){
+  if(!this.head){return null}
+  var current=this.head
+  
+  while(current ){
+    if(typeof elem==="function"){
+      if(elem(current.value)){
+       return current.value
+      }
+    }
+    else if(current.value===elem ){
+      return elem
+    }
+    current=current.next
+  }
+ 
+  return null
+}
+
 
 // Hash Table( ver información en: https://es.wikipedia.org/wiki/Tabla_hash)
 // Una Hash table contiene un arreglo de "contenedores" o buckets donde puede guardar información.
-// Para este ejercicio, generar 35 buckets para la Hash Table, y realizar los métodos, get, hasKey
+// Para este ejercicio, generar 35 buckets para la Hash Table, y realizar los métodos set, get, hasKey
 // Para almacenar un valor asociado a una key (string):
 //    - Se pasa ese valor a la función hash(Pista: usar la función charCodeAt), que determina la posición en que debe ir en el arreglo. 
 //    - Luego el elemento se inserta(llamando al método set) en la posición(índice) devuelta. 
@@ -31,9 +91,35 @@ function Node(value){
 //    - Retornar dicho valor.
 
 function HashTable() {
-
+  this.numBuckets=35;
+  this.buckets=[];
 }
+HashTable.prototype.hash=function(key){
+  var acum=0;
+  for(var i = 0 ; i< key.length; i++){
+    acum += key.charCodeAt(i);
+  }
+  return acum % this.numBuckets
+}
+HashTable.prototype.set=function(key,value){
+  if(typeof key !== "string") throw new TypeError('Keys must be strings')
+  var index= this.hash(key);
+  if(!this.buckets[index]){
+    this.buckets[index]= {}
+  }
+  this.buckets[index][key] = value
+}
+//  this.buckets[index]= es el lugar del arrreglo
+//  this.buckets[index][key]=es la prop del objeto del arreglo
 
+HashTable.prototype.get=function(key){
+  var index = this.hash(key);
+  return this.buckets[index][key];
+}
+HashTable.prototype.hasKey=function(key){
+  var index = this.hash(key);
+    return  !!this.buckets[index][key]
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
