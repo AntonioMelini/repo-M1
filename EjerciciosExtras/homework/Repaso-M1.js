@@ -9,14 +9,25 @@ const {
 // número u otro array anidado de números, determinar la suma de todos los números contenidos en el array.
 // El array será recibido por parámetro.
 // Ejemplo:
-//    const array = [1, [2, [3,4]], [5,6], 7];
+//    const array = [1, [2, []3,4], [5,6], 7];
 //    countArray(array); --> Debería devolver 28 (1 + 2 + 3 + 4 + 5 + 6 + 7)
 // Pista: utilizar el método Array.isArray() para determinar si algun elemento de array es un array anidado
 // [Para más información del método: https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/isArray]
 
 var countArray = function(array) {
-    // Tu código aca:
-    
+    // Tu código aca
+
+   
+   var sum=0;
+    for (var i = 0; i < array.length; i++) {
+        if(Array.isArray(array[i])===false){
+            sum+=array[i];
+        }else{
+             sum+=countArray(array[i]);
+        }
+        
+    }
+    return sum;
 }
 
 
@@ -39,7 +50,14 @@ var countArray = function(array) {
 
 var countProps = function(obj) {
     // Tu código aca:
-
+    let count=0;
+    for(let prop in obj){
+        count++
+        if(typeof obj[prop]=== "object" && !Array.isArray(obj[prop])){
+            count+=countProps(obj[prop]);
+        }
+    }
+    return count
 }
 
 
@@ -53,7 +71,16 @@ var countProps = function(obj) {
 
 LinkedList.prototype.changeNotNumbers = function(){
     // Tu código aca:
-
+    let count=0;
+    let current=this.head;
+    while(current){
+        if(isNaN(Number(current.value))){
+            current.value='Kiricocho';
+            ++count;
+        }
+        current=current.next;
+    }
+    return count;
 }
 
 
@@ -67,7 +94,15 @@ LinkedList.prototype.changeNotNumbers = function(){
 
 var mergeQueues = function(queueOne, queueTwo) {
     // Tu código aca:
+    let newqueue= new Queue();
+    while(queueOne.size() || queueTwo.size()){
+        let elementone=queueOne.dequeue();
+        let elementwo=queueTwo.dequeue();
+        if(elementone) newqueue.enqueue(elementone);
+        elementwo && newqueue.enqueue(elementwo);
 
+    }
+    return newqueue;
 }
 
 
@@ -82,6 +117,9 @@ var mergeQueues = function(queueOne, queueTwo) {
 
 var closureMult = function(multiplier) {
     // Tu código aca:
+    return function(num){
+        return num*multiplier;
+    }
 
 }
 
@@ -89,7 +127,11 @@ var closureMult = function(multiplier) {
 // que debe retornar la suma total de los valores dentro de cada nodo del arbol
 BinarySearchTree.prototype.sum = function() {
     // Tu código aca:
-
+    let sum=this.value;
+    if(this.left )sum+=this.left.sum()
+    if(this.right ) sum+=this.right.sum()
+    return sum
+    
 }
 
 module.exports = {
