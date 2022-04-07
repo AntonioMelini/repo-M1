@@ -23,6 +23,7 @@ function quickSort(array) {
     }
   }
   return quickSort(izquierda).concat(pivote).concat(quickSort(derecha));
+  // return [].concat(quickSort(izquierda),array[pivote],quickSort(derecha))
   
 }
 // 1 5 6 8 9 8
